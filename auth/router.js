@@ -2,7 +2,7 @@ const bcryptjs = require("bcryptjs");
 
 const router = require("express").Router();
 
-const Users = require("../users/users-model.js");
+const Users = require("../users/user_model");
 const { isValid } = require("../users/users-service.js");
 
 router.post("/register", (req, res) => {
@@ -39,9 +39,9 @@ router.post("/login", (req, res) => {
   if (isValid(req.body)) {
     Users.findBy({ username: username })
       .then(([user]) => {
-        // compare the password the hash stored in the database
+
         if (user && bcryptjs.compareSync(password, user.password)) {
-          // we can save information about the client inside the session (req.session)
+
           req.session.loggedIn = true;
           req.session.user = user;
 
